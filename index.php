@@ -28,12 +28,15 @@
     Não há produtos na lista
 
 <?php else: ?>
+    <form id="formAcoes" method="POST" action="index.php" >
             <table class="table">
                 <thead>
                     <tr>    
                         <th scope="col">Nome</th>
                         <th scope="col">Categoria</th>
+                        <th scope="col">Quantidade</th>
                         <th scope="col">Preço</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,12 +44,16 @@
                     <tr>
                         <td><?=$produto['nome']?></td>  <?php /* sintaxe curta de echo */ ?>
                         <td><?php echo $produto['categoria']?></td> <?php /* echo por extenso */ ?>
+                        <td><?=$produto['quantidade']?></td>
                         <td><?=$produto['preco']?></td>
+                        <td>
+                            <button type="submit" name="excluirProduto" value="<?=$indice?>" class="btn btn-secondary mb-2">Excluir</button>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
             </table>
-
+    </form>
 <?php endif; ?>
  
            </div>

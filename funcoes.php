@@ -4,19 +4,24 @@
 
 function mockCreateInitialProducts() {
    $listaProdutos = &obterListaProdutos();
-   array_push($listaProdutos, createProduct("Caneca de Vidro", "Caneca", "Suporta 350 ml", 100, 50.00, "camiseta.png"));
-   array_push($listaProdutos, createProduct("Caneca de Plastico", "Caneca", "Suporta 500 ml", 200, 20.00, "camiseta.png"));
+
+   $produto = createProduct("Caneca de Vidro", "Caneca", "Suporta 350 ml", 100, 50.00, "camiseta.png");
+   $listaProdutos[$produto['id']] = $produto;
+
+   $produto = createProduct("Caneca de Plastico", "Caneca", "Suporta 500 ml", 200, 20.00, "camiseta.png");
+   $listaProdutos[$produto['id']] = $produto;
 }
 
-function createProduct($nome, $categoria, $descricao, $quantidade, $preco, $uploadFoto) {
+function createProduct($nome, $categoria, $descricao, $quantidade, $preco, $foto) {
     // Recebe variaveis (parametros) separados e desconectados e, com eles, cria um array (objeto) para representar um produto.
     return [
+        'id' => hash('sha256', uniqid("")), // gera um idenficador unico para o registro
         'nome' => $nome,
         'categoria' => $categoria, 
         'descricao' => $descricao,
         'quantidade' => $quantidade,
         'preco' => $preco, 
-        'uploadFoto' => $uploadFoto
+        'foto' => $foto
     ];
 }
 
@@ -35,12 +40,15 @@ function adicionarProduto(){
     $descricao = $_POST['descricao'];
     $quantidade = $_POST['quantidade'];
     $preco = $_POST['preco'];
-    $img = $_POST['img'];
+    $img = $_FILES['img'];
 
     $novoProduto = createProduct($nomeProduto, $categoria, $descricao, $quantidade, $preco, $img);
    
+    //Movimenta o arquivo temporario que foi carregado por upload no servidor para um diretorio conhecido e accessivel via http
+    move_uploaded_file($img['tmp_name'], dirname(__FILE__) . "/uploads/" . $novoProduto['id']);
+
     $listaProdutos = &obterListaProdutos(); 
-    array_push($listaProdutos, $novoProduto); //Adiciono item a lista
+    $listaProdutos[$novoProduto['id']] = $novoProduto; //Adiciono item a lista
 }
 
 function excluirProduto() {
@@ -67,7 +75,6 @@ function executarAcoes() {
 
 session_start();
 executarAcoes();
-
 
 // Utilizamos essa função para adicionar produtos na sessão e programar o caso de uso "Listar Produtos"
 //mockCreateInitialProducts();

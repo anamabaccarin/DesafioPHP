@@ -2,7 +2,6 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +27,7 @@
     Não há produtos na lista
 
 <?php else: ?>
-    <form id="formAcoes" method="POST" action="index.php" >
+    <form id="formAcoes" method="POST" action="index.php">
             <table class="table">
                 <thead>
                     <tr>    
@@ -42,7 +41,9 @@
                 <tbody>
                 <?php foreach ($listaProdutos as $indice => $produto):?>
                     <tr>
-                        <td><?=$produto['nome']?></td>  <?php /* sintaxe curta de echo */ ?>
+                        <td>
+                            <a href="detalhe.php?indice=<?=$indice?>"><?=$produto['nome']?></a>
+                        </td>  <?php /* sintaxe curta de echo */ ?>
                         <td><?php echo $produto['categoria']?></td> <?php /* echo por extenso */ ?>
                         <td><?=$produto['quantidade']?></td>
                         <td><?=$produto['preco']?></td>
@@ -58,7 +59,7 @@
  
            </div>
             <div class="col-md-4 border border-success rounded p-3">     
-                <form id="formCadastro" method="POST" action="index.php" >
+                <form id="formCadastro" method="POST" action="index.php" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Nome</label>
                         <input type="text" class="form-control" id="nomeProduto" name="nomeProduto" placeholder="Nome do Produto">
